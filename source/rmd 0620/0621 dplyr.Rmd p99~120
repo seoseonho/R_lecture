@@ -1,0 +1,48 @@
+# p.98
+# 분석 프로세스
+
+# 데이터 전처리를 위한 도구 dplyr
+# 데이터 전처리를 위한 도구 data.table
+
+## 처리속도 차이
+# dplyr : 10gb 이내
+# data.table : 50gb 이상
+
+# 배움의 측면
+# dplyr 매우 쉬움
+# data.table 어려움
+
+# 라이브러리 불러오기
+# install.packages("dplyr")
+library(dplyr)
+
+
+mpg1 <- read.csv("mpg1.csv", stringsAsFactors = F)
+
+str(mpg1)
+data2 <- mpg1 %>%
+  select(drv, cty, hwy) %>% 
+  filter(drv == "f") %>% 
+  v() %>% 
+  v() %>%
+ 
+  #select : 컬러명 추출
+  #filter : 행 추출 (조건식)
+  # group by :
+  # summarize() :
+   
+data3 <- select(mpg1, drv, cty, hwy)
+data3 <- filter(data3, drv == "f")
+data3 <- v()
+
+%>% <- 컨트롤+쉽프트+m
+
+
+# 교재 p99 ~ p120
+
+ 빈도분석 p.99
+count (데이터세트, 변수)
+table (데이터세트 $변수)
+
+count(mpg1, trans) 
+ 

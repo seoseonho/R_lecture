@@ -1,0 +1,153 @@
+---
+title: "0622(2)"
+output:
+  html_document:
+    keep_md: true
+date: '2022-06-22'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## ggplot2 강의
+-데이터 불러오기
+```{r}
+library(readxl)
+library(ggplot2)
+who_disease <- read_xlsx("data/who_disease.xlsx")
+
+# 기본 시각화
+ggplot(who_disease, aes (x = year, y = cases)) + 
+  # 그래프 종류
+  geom_point()
+
+# 옵션 1.  투명모드
+ggplot(who_disease, aes (x = year, y = cases)) + 
+  # 그래프 종류
+  geom_point(alpha = 0.1)
+
+# 옵션 2. 색상 변화
+ggplot(who_disease, aes (x = year, y = cases)) + 
+  # 그래프 종류
+  geom_point(alpha = 0.2, colour = "#B900FA")
+
+```
+- colour 입력 위치
+  + geom_point(colour="red")
+  + aes(x, y, colour = 컬럼명)
+
+```{r}
+str(iris)
+ggplot(iris, aes(x = Sepal.Length,
+                 y = Sepal.Width,
+                 colour = Species)) +
+  geom_point()
+  # 옵션 장난
+```
+  
+- 산점도 : x축 수치형 연속형 데이터, y축 수치형 연속형 데이터
+
+```{r}
+ggplot(who_disease, aes (x = year, y = cases)) + 
+  # 그래프 종류
+  geom_point(alpha = 0.1)
+```
+
+
+- 히스토그램
+   + 질병 데이터
+   region = AMP, year = 1980, disease = 백일해(pertussis)
+   cases > 0
+   
+```{r}
+library(dplyr)
+str(who_disease)
+who_disease %>% 
+  filter(region == 'AMR',
+         year == 1980,
+         disease == 'pertussis',
+         cases > 0) -> data2
+
+ggplot(data2, aes(x = cases)) +
+  geom_histogram(fill = "blue")
+
+ggplot(data2, aes(x = country, y = cases)) +
+  geom_col(fill = "red") +
+#옵션
+ coord_flip()
+
+ggplot(who_disease, aes(region)) +
+  geom_bar()
+```
+   
+## ggplot 함수정교하게 그리기 p.215
+
+ggplot(data=diamonds, aes(x=carat, y=price)) +
+ geom_point()
+
+
+
+
+
+
+
+
+
+-막대그래프에 2개 범주 내용 반영하기
+```{r}
+ggplot(diamonds, aes(x = color, fill = cut)) +
+  geom_bar(position = "fill") # dodge
+
+```
+
+
+- p.219
+ 선 그래프에 2개 범주 내용 반영
+```{r}
+leisure <- read.csv("data/leisure.csv")
+str(leisure)
+```
+ 
+```{r}
+ggplot(data = leisure, aes(x = age, y = expense, col = sex)) +
+  geom_line()
+```
+ 
+### 막대 그래프의 순서 변경
+- reorder()
+```{r}
+mpg1 <- read.csv("data/mpg1.csv",stringsAsFactors = FALSE)
+
+# 데이터 가공
+drv_hwy <- mpg1 %>%
+  group_by(drv) %>% 
+  summarise(mean_hwy = mean(hwy))
+
+drv_hwy
+```
+
+
+```{r}
+# 기본 그래프
+ggplot(data = drv_hwy, aes(x = drv, y = mean_hwy)) +
+  geom_col()
+
+ggplot(data = drv_hwy, aes(x = reorder(drv, mean_hwy),#오름차순
+                           y = mean_hwy)) +
+  geom_col()
+
+ggplot(data = drv_hwy, aes(x = reorder(drv, -mean_hwy),#내림
+                           y = mean_hwy)) +
+  geom_col() +
+  
+  labs(
+    title = "그래프 제목을 입력하세여",
+    subtitle = "그래프 소제목을 입력하세여",
+    x = "x변수명을 입력하세여",
+    y = "y변수명을 입력하세여",
+    caption = "데이터 출처를 입력하세여"
+  )
+```
+
+

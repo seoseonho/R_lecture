@@ -1,0 +1,141 @@
+---
+title: '0622통계' 
+output:
+  html_document:
+    keep_md: true
+date: '2022-06-22'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+통계는 실험이다
+
+결측치 처리 방법 2가지
+
+-첫번째: 평균값을 넣었을 때,  예측 판매량
+
+-두번째: 결측치를 제거할 때,  예측 판매량
+
+##라이브러리 불러오기 7장 p.158
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+##데이터 불러오기
+- 데이터를 불러오세요
+
+```{r}
+exam_na <- read.csv("data/exam_na.csv")
+str(exam_na)
+```
+
+dplyr
+select
+
+is this yours? / TRUE / FALSE
+
+is na() ()안에 검증하려는~
+
+### (2) 결측치 빈도 구하기
+### (1) 결측치 확인
+
+~~~
+~~~
+```{r}
+is.na(exam_na)
+```
+dplyr 
+select 
+
+Is this yours? / TRUE / FALSE 
+
+- is.na() ()안에 검증하려는 ~
+
+### (2) 결측치 빈도 구하기
+- table() : 빈도구하기
+```{r}
+table(is.na(exam_na))
+table(is.na(exam_na$korean))
+summary(is.na(exam_na))
+summary(exam_na)
+```
+
+## 결측치 처리 방법
+- 제거하고 처리하기
+- 다른 값으로 대체하기
+  + 평균 입력
+  
+  
+### (1) 결측치를 제외하고 분석하기
+   p.160
+  na.kr = T
+```{r}
+mean(exam_na$korean, na.rm = TRUE)
+
+```
+
+- na.omit()
+- 결측치가 있는 행을 모두 제거.
+   +가급적 쓰지 말것
+   
+- filter() 활용
+  +is.na(korean)
+```{r}
+exam_na %>% filter(!is.na(korean))
+```
+
+### (2) 결측치를 다른 값으로 대체하기
+
+imputation 참고자료
+
++ [A Solution to Missing Data: Imputation Using R](https://www.kdnuggets.com/2017/09/missing-data-imputation-using-r.html)
++ [R 결측값(NA) 제거, 대체 방법](https://velog.io/@lifeisbeautiful/R-%EA%B2%B0%EC%B8%A1%EA%B0%92NA-%EC%A0%9C%EA%B1%B0-%EB%8C%80%EC%B2%B4-%EB%B0%A9%EB%B2%95)
+
+##이상치의
+- 데이터의 특정 값이 무너가 '이상'이 있다.
+- case 1 : 정해진 범주에서 벗어난 데이터
+  + 2000년 4월 3일 / 2000년 40월 30일 -->9999
+- case 2 : 숫자  / 아웃라이어(outlier) / 극단값
+  + 평균 : 평균임금 320만원  /  손흥민 몇십억원
+  
+```{r}
+mpg1_out <- read.csv("data/mpg1_out.csv")
+glimpse(mpg1_out)
+```
+  
+  - trans의 갯수를 구하자
+```{r}
+table(mpg1_out$trans)
+```
+  
+- ifelse
+- 만약 ~라면, 내가 무엇을 할 것이다. (가정법)
+-  만약 trans의 값이 3이라면, 결측치로 바꿔주세요. 나머지는 그대로 유지하세요
+
+```{r}
+mpg1_out$trans <- ifelse(mpg1_out$trans == 3, NA, mpg1_out$trans)
+table(is.na(mpg1_out$trans))
+```
+
+- 결측치 제거
+```{r}
+result <- mpg1_out %>% filter(!is.na(trans))
+table(is.na(mpg1_out$trans))
+```
+
+### 극단치 처리
+- 숫자 데이터 boxplot()
+- boxplot() g함수를 통해서 극단치가 있는지 없는 확인 가능
+- IQR : 3사분위 - 1사분위
+- 경계값 : IQR + IQR * 1.5 상한 / IQR -IQR * 1.5
+
+```{r}
+mpg1 <- read.csv("data/mpg1.csv")
+boxplot(mpg1$cty)
+boxplot(mpg1$cty)$stats
+```
+

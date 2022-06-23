@@ -1,0 +1,85 @@
+---
+title: "통계"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    keep_md: true
+date: '2022-06-23 10:00:00'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 제목 1
+ㅁㅁㅁㅁㅁㅁ
+
+### 소제목 1
+ㅁㄴㅇㅁㄴㅇ
+
+## 제목 2
+ㅁㄴㅇㅁㄴㅇ
+
+### 소제목 1-1
+
+
+## 복습
+
+iris 데이터, sepal. length, sepal. width 활용해서
+종별로 산점도를 그리세요.
+-제목과 x축, y축을 제목을 변경하세여.
++ x축 길이, y축 너비
+
+```{r}
+library(ggplot2)
+library(dplyr)
+str(iris)
+ggplot(iris, aes(x = Sepal.Length,
+                 y = Sepal.Width,
+                 colour = Species)) +
+  geom_point() +
+  labs(
+    title = "제목",
+    x = "길이",
+    y = "너비",
+  ) +
+  scale_color_manual(
+    labels = c("setosa", "versicolor", "virginica"),
+    values = c("red", "blue", "yellow")
+  ) +
+  theme_classic()
+
+```
+- boxplot
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Width)) + 
+  geom_boxplot()
+```
+
+
+
+
+## 통계
+- 기술통계 : 평균, 최솟값, 최댓값, 중간값
+- 추론통계 : 변수 간의 관계를 파악 / 새로운 사실을 발견
+(= 추정)
+ + 평균 차이 검정
+  -가설검정 : 평균의 차이를 검정
+  - 남자의 평균키와 여자의 평균 키는 차이가 있을 것이다.
+  
+  + 교차분석(= 빈도분석)
+    - 가설검점 : 각 범주별 빈도를 활용해서
+    관계성을 검정
+    
+    + 상관관계분석
+     - 수치 데이터
+     - 두 변수간의 상관계가 있다? 없다?
+    + 단순회귀분석
+     - y = ax + b
+     - 기온, 판매량
+     - 가설검정
+      + 기온 (독립변수) 가 판매량 (종속변수)에 긍정적인 영향을 주고 있을 것이다.
+      
+

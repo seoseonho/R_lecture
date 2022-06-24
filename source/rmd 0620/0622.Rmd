@@ -84,9 +84,11 @@ mean(exam_na$korean, na.rm = TRUE)
    
 - filter() 활용
   +is.na(korean)
+
 ```{r}
 exam_na %>% filter(!is.na(korean))
 ```
+
 
 ### (2) 결측치를 다른 값으로 대체하기
 

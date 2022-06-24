@@ -1,0 +1,82 @@
+---
+title: "0624(2)"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    keep_md: true
+date: '2022-06-24'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+p.263 분석 개요
+
+## 분석 데이터
+https://www.kipa.re.kr/
+  정보공개 -> DB활용신청 -데이터 신청 바로가기
+신청자료는 '2019 사회통합실태조사' 알아볼수있음
+
+## 데이터 전처리
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+install.packages("foreign")
+library(foreign)
+
+```
+```{r}
+mental <- read.spss
+class(mental)
+
+```
+mental <- as.data.frame(mental)# 데이터프레임으로변환하기
+
+class(mental) #객체 유형 확인
+
+1 "data.frame"
+
+
+
+
+```{r}
+#변수 추출
+mental <- mental %>% 
+  select(q32_2, q1_4, q32_1, q34_1, q52, d17 ,d1 ,d2, ara) %>% 
+
+  #변수이름 변경
+   rename(suicide=q32_2,
+          satisfaction=q1_4,
+          loneloness=q32_1,
+          family_belief=q34_1,
+          wealth=q52,
+          health=d17,
+          sex=d1,
+          age=d2,
+         area=ara)
+str(mental)
+
+
+```
+
+
+
+```{r}
+table(mental$suicide)
+
+
+
+mental$suicide <- as.integer(mental$suicide)
+mental$satisfaction <- as.integer(mental$satisfaction)
+mental$loneliness <- as.integer(mental$loneliness)
+mental$family_belief <-as.integer(mentalfamily_belief)
+mental$wealth <- as.integer(mental$wealth)
+mental$health <- as.integer(mental$health)
+
+table(mental$suicide)
+```
+
